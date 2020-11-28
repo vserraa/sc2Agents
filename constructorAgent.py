@@ -9,7 +9,7 @@ class ConstructorAgent():
     
     def __init__(self, game_ref):
         self.game = game_ref
-        self.MAX_DISTANCE = 100000
+        self.MAX_DISTANCE = 50
         self.MAX_GATEWAY = 12
         self.MAX_STARGATE = 8
 

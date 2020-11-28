@@ -12,7 +12,7 @@ from explorationAgent import ExplorationAgent
 class MainAgent(sc2.BotAI):
     def __init__(self):
         self.ITERATIONS_PER_MINUTE = 165
-        self.MAX_WORKERS = 50
+        self.MAX_WORKERS = 66
         self.workerAgent = WorkerAgent(self)
         self.constructorAgent = ConstructorAgent(self)
         self.militarAgent = MilitarAgent(self)
@@ -28,5 +28,5 @@ class MainAgent(sc2.BotAI):
 
 run_game(maps.get("AcropolisLE"), [
     Bot(Race.Protoss, MainAgent()),
-    Computer(Race.Terran, Difficulty.Hard)
+    Computer(Race.Zerg, Difficulty.Hard)
     ], realtime=False)
