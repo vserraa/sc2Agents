@@ -9,10 +9,10 @@ from constructorAgent import ConstructorAgent
 from militarAgent import MilitarAgent
 from explorationAgent import ExplorationAgent
 
-class SentdeBot(sc2.BotAI):
+class MainAgent(sc2.BotAI):
     def __init__(self):
         self.ITERATIONS_PER_MINUTE = 165
-        self.MAX_WORKERS = 50
+        self.MAX_WORKERS = 66
         self.workerAgent = WorkerAgent(self)
         self.constructorAgent = ConstructorAgent(self)
         self.militarAgent = MilitarAgent(self)
@@ -27,6 +27,6 @@ class SentdeBot(sc2.BotAI):
         await self.militarAgent.on_step(iteration)
 
 run_game(maps.get("AcropolisLE"), [
-    Bot(Race.Protoss, SentdeBot()),
-    Computer(Race.Terran, Difficulty.Hard)
+    Bot(Race.Protoss, MainAgent()),
+    Computer(Race.Zerg, Difficulty.Hard)
     ], realtime=False)

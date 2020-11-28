@@ -36,7 +36,7 @@ class MilitarAgent():
     async def use_ability(self):
         for unit in self.game.units(VOIDRAY):
             if self.targets.amount > 0 and unit.target_in_range(self.targets.closest_to(unit)):
-                unit(AbilityId.EFFECT_VOIDRAYPRISMATICALIGNMENT)
+                self.game.do(unit(AbilityId.EFFECT_VOIDRAYPRISMATICALIGNMENT))
 
     async def train_offensive_units(self):
         for gw in self.game.units(GATEWAY).ready.idle:
