@@ -29,13 +29,13 @@ class MilitarAgent():
                     await self.game.do(unit.attack(self.find_target(self.game.state, unit)))
 
             elif self.game.units(UNIT).amount > aggressive_units[UNIT][1]:
-                if len(self.targets) > 0:
+                if self.targets.amount > 0:
                     for unit in self.game.units(UNIT).idle:
                         await self.game.do(unit.attack(self.targets.closest_to(unit)))
 
     async def use_ability(self):
         for unit in self.game.units(VOIDRAY):
-            if len(self.targets) > 0 and unit.target_in_range(self.targets.closest_to(unit)):
+            if self.targets.amount > 0 and unit.target_in_range(self.targets.closest_to(unit)):
                 self.game.do(unit(AbilityId.EFFECT_VOIDRAYPRISMATICALIGNMENT))
 
     async def train_offensive_units(self):
@@ -49,9 +49,9 @@ class MilitarAgent():
                 await self.game.do(sg.train(VOIDRAY))
 
     def find_target(self, state, unit):
-        if len(self.targets) > 0:
+        if self.targets.amount > 0:
             return self.targets.closest_to(unit)
-        elif len(self.game.known_enemy_structures) > 0:
+        elif self.game.known_enemy_structures.amount > 0:
             return self.game.known_enemy_structures.closest_to(unit)
         else:
             return self.game.enemy_start_locations[0]
