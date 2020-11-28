@@ -8,7 +8,7 @@ class ExplorationAgent():
         self.game = game_ref
 
     async def on_step(self, iteration):
-        print("Agente explorador!")
+        #print("Agente explorador!")
         await self.expand()
 
     async def expand(self):

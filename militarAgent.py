@@ -2,8 +2,9 @@ import sc2
 from sc2 import run_game, maps, Race, Difficulty
 from sc2.player import Bot, Computer
 from sc2.constants import NEXUS, PROBE, PYLON, ASSIMILATOR, GATEWAY, CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY
-from sc2.AbilityId import EFFECT_VOIDRAYPRISMATICALIGNMENT
 import random
+from sc2.ids.ability_id import AbilityId
+from sc2.ids.buff_id import BuffId
 
 class MilitarAgent():
     
@@ -11,7 +12,7 @@ class MilitarAgent():
         self.game = game_ref
 
     async def on_step(self, iteration):
-        print("Agente militar!")
+        #print("Agente militar!")
         await self.train_offensive_units()
         await self.attack()
         await self.use_ability()
@@ -34,8 +35,8 @@ class MilitarAgent():
 
     async def use_ability(self):
         for s in self.game.units(VOIDRAY):
-            if s.weapon_cooldown > 0:
-                s(EFFECT_VOIDRAYPRISMATICALIGNMENT)
+            if s.is_attacking:
+                s(AbilityId.EFFECT_VOIDRAYPRISMATICALIGNMENT)
 
     async def train_offensive_units(self):
         for gw in self.game.units(GATEWAY).ready.noqueue:

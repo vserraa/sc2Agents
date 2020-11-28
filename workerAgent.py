@@ -8,7 +8,7 @@ class WorkerAgent():
         self.game = game_ref
 
     async def on_step(self, iteration):
-        print("Agente coletor distribuindo tropas!")
+        #print("Agente coletor distribuindo tropas!")
         await self.game.distribute_workers()
         await self.build_workers()
 

@@ -11,7 +11,7 @@ class ConstructorAgent():
         self.game = game_ref
 
     async def on_step(self, iteration):
-        print("Agente construtor!")
+        #print("Agente construtor!")
         await self.build_pylons()
         await self.build_assimilators()
         await self.offensive_force_buildings()
