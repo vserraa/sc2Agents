@@ -1,8 +1,8 @@
 import sc2
 from sc2 import run_game, maps, Race, Difficulty
 from sc2.player import Bot, Computer
-from sc2.constants import NEXUS, PROBE, PYLON, ASSIMILATOR, GATEWAY, \
- CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY
+from sc2.constants import NEXUS, PYLON, GATEWAY, ASSIMILATOR, \
+ CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY, FORGE
 import random
 
 class ConstructorAgent():
@@ -21,7 +21,7 @@ class ConstructorAgent():
             nexuses = self.game.units(NEXUS).ready
             if nexuses.exists:
                 if self.game.can_afford(PYLON):
-                    await self.game.build(PYLON, near=nexuses.first)
+                    await self.game.build(PYLON, near=nexuses.first, max_distance=60)
 
     async def build_assimilators(self):
         for nexus in self.game.units(NEXUS).ready:
@@ -51,3 +51,6 @@ class ConstructorAgent():
                 if len(self.game.units(STARGATE)) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                     if self.game.can_afford(STARGATE) and not self.game.already_pending(STARGATE):
                         await self.game.build(STARGATE, near=pylon)
+            
+            if not self.game.units(FORGE).ready.exists and not self.game.already_pending(FORGE) and len(self.game.units(GATEWAY)) > 2:
+                await self.game.build(FORGE, near=pylon)
