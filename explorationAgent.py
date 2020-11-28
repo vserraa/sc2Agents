@@ -1,5 +1,7 @@
 import sc2
-from sc2.constants import NEXUS, PYLON, EFFECT_CHRONOBOOSTENERGYCOST, CHRONOBOOSTENERGYCOST
+from sc2.constants import NEXUS, PYLON
+from sc2.ids.ability_id import AbilityId
+from sc2.ids.buff_id import BuffId
 from sc2.units import Unit, Units
 
 class ExplorationAgent():
@@ -20,6 +22,6 @@ class ExplorationAgent():
         if self.game.units(PYLON).exists:
             for nexus in self.game.units(NEXUS):
                 abilities = await self.game.get_available_abilities(nexus)
-                if EFFECT_CHRONOBOOSTENERGYCOST in abilities:
-                    if not nexus.has_buff(CHRONOBOOSTENERGYCOST):
-                        await self.game.do(nexus(EFFECT_CHRONOBOOSTENERGYCOST, nexus))
+                if AbilityId.EFFECT_CHRONOBOOSTENERGYCOST in abilities:
+                    if not nexus.has_buff(BuffId.CHRONOBOOSTENERGYCOST):
+                        await self.game.do(nexus(AbilityId.EFFECT_CHRONOBOOSTENERGYCOST, nexus))
