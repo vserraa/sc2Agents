@@ -9,10 +9,10 @@ class ConstructorAgent():
     
     def __init__(self, game_ref):
         self.game = game_ref
-        self.MAX_DISTANCE = 2000
+        self.MAX_DISTANCE = 100000
 
     async def on_step(self, iteration):
-        print("Agente construtor!")
+        #print("Agente construtor!")
         await self.build_pylons()
         await self.build_assimilators()
         await self.offensive_force_buildings()
@@ -44,12 +44,12 @@ class ConstructorAgent():
                 if self.game.can_afford(CYBERNETICSCORE) and not self.game.already_pending(CYBERNETICSCORE):
                     await self.game.build(CYBERNETICSCORE, near=pylon, max_distance=self.MAX_DISTANCE)
 
-            elif len(self.game.units(GATEWAY)) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
+            elif len(self.game.units(GATEWAY)) + self.game.already_pending(GATEWAY) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                 if self.game.can_afford(GATEWAY) and not self.game.already_pending(GATEWAY):
                     await self.game.build(GATEWAY, near=pylon, max_distance=self.MAX_DISTANCE)
 
             if self.game.units(CYBERNETICSCORE).ready.exists:
-                if len(self.game.units(STARGATE)) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
+                if len(self.game.units(STARGATE)) + self.game.already_pending(STARGATE) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                     if self.game.can_afford(STARGATE) and not self.game.already_pending(STARGATE):
                         await self.game.build(STARGATE, near=pylon, max_distance=self.MAX_DISTANCE)
             
