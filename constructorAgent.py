@@ -44,14 +44,14 @@ class ConstructorAgent():
                 if self.game.can_afford(CYBERNETICSCORE) and not self.game.already_pending(CYBERNETICSCORE):
                     await self.game.build(CYBERNETICSCORE, near=pylon, max_distance=self.MAX_DISTANCE)
 
-            elif len(self.game.units(GATEWAY)) + self.game.already_pending(GATEWAY) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
+            elif self.game.units(GATEWAY).amount + self.game.already_pending(GATEWAY) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                 if self.game.can_afford(GATEWAY) and not self.game.already_pending(GATEWAY):
                     await self.game.build(GATEWAY, near=pylon, max_distance=self.MAX_DISTANCE)
 
             if self.game.units(CYBERNETICSCORE).ready.exists:
-                if len(self.game.units(STARGATE)) + self.game.already_pending(STARGATE) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
+                if self.game.units(STARGATE).amount + self.game.already_pending(STARGATE) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                     if self.game.can_afford(STARGATE) and not self.game.already_pending(STARGATE):
                         await self.game.build(STARGATE, near=pylon, max_distance=self.MAX_DISTANCE)
             
-            if not self.game.units(FORGE).ready.exists and not self.game.already_pending(FORGE) and len(self.game.units(GATEWAY)) > 2:
+            if not self.game.units(FORGE).ready.exists and not self.game.already_pending(FORGE) and self.game.units(GATEWAY).amount > 2:
                 await self.game.build(FORGE, near=pylon, max_distance=self.MAX_DISTANCE)
