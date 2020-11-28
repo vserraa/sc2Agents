@@ -25,8 +25,3 @@ class SentdeBot(sc2.BotAI):
         await self.constructorAgent.on_step(iteration)
         await self.explorationAgent.on_step(iteration)
         await self.militarAgent.on_step(iteration)
-
-run_game(maps.get("AcropolisLE"), [
-    Bot(Race.Protoss, SentdeBot()),
-    Computer(Race.Terran, Difficulty.Hard)
-    ], realtime=False)

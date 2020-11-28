@@ -1,8 +1,7 @@
 import sc2
 from sc2 import run_game, maps, Race, Difficulty
 from sc2.player import Bot, Computer
-from sc2.constants import NEXUS, PYLON, GATEWAY, ASSIMILATOR, \
- CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY, FORGE
+from sc2.constants import NEXUS, PYLON, GATEWAY, ASSIMILATOR, CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY, FORGE
 import random
 
 class ConstructorAgent():
