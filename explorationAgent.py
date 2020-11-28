@@ -22,6 +22,5 @@ class ExplorationAgent():
             
     async def chronoboost(self):
         for nexus in self.game.units(NEXUS).ready:
-            canCast = self.game.can_cast(nexus, AbilityId.EFFECT_CHRONOBOOSTENERGYCOST)
-            if canCast:
+            if nexus.energy >= 50 and not nexus.is_idle:
                 await self.game.do(nexus(AbilityId.EFFECT_CHRONOBOOSTENERGYCOST, nexus))
