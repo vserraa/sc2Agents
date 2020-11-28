@@ -12,5 +12,7 @@ class ExplorationAgent():
         await self.expand()
 
     async def expand(self):
-        if self.game.units(NEXUS).amount < (self.game.iteration / self.game.ITERATIONS_PER_MINUTE) and self.game.can_afford(NEXUS):
+        if self.game.townhalls.ready.amount + self.game.already_pending(NEXUS) < 3 and self.game.can_afford(NEXUS):
+            await self.game.expand_now()
+        elif self.game.townhalls.ready.amount + self.game.already_pending(NEXUS) < (self.game.iteration / ( 3 * self.game.ITERATIONS_PER_MINUTE) ) and self.game.can_afford(NEXUS):
             await self.game.expand_now()

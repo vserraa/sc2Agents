@@ -14,6 +14,6 @@ class WorkerAgent():
 
     async def build_workers(self):
         if (len(self.game.units(NEXUS)) * 16) > len(self.game.units(PROBE)) and len(self.game.units(PROBE)) < self.game.MAX_WORKERS:
-            for nexus in self.game.units(NEXUS).ready.noqueue:
+            for nexus in self.game.units(NEXUS).ready.idle:
                 if self.game.can_afford(PROBE):
                     await self.game.do(nexus.train(PROBE))

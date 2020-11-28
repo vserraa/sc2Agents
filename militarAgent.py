@@ -35,16 +35,16 @@ class MilitarAgent():
 
     async def use_ability(self):
         for unit in self.game.units(VOIDRAY):
-            if len(self.targets) > 0 and s.target_in_range(self.targets.closest_to(unit)):
+            if len(self.targets) > 0 and unit.target_in_range(self.targets.closest_to(unit)):
                 unit(AbilityId.EFFECT_VOIDRAYPRISMATICALIGNMENT)
 
     async def train_offensive_units(self):
-        for gw in self.game.units(GATEWAY).ready.noqueue:
+        for gw in self.game.units(GATEWAY).ready.idle:
             if not self.game.units(STALKER).amount > self.game.units(VOIDRAY).amount:
                 if self.game.can_afford(STALKER) and self.game.supply_left > 0:
                     await self.game.do(gw.train(STALKER))
 
-        for sg in self.game.units(STARGATE).ready.noqueue:
+        for sg in self.game.units(STARGATE).ready.idle:
             if self.game.can_afford(VOIDRAY) and self.game.supply_left > 0:
                 await self.game.do(sg.train(VOIDRAY))
 

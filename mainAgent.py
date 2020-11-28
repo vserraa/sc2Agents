@@ -28,5 +28,5 @@ class SentdeBot(sc2.BotAI):
 
 run_game(maps.get("AcropolisLE"), [
     Bot(Race.Protoss, SentdeBot()),
-    Computer(Race.Terran, Difficulty.Medium)
+    Computer(Race.Terran, Difficulty.Hard)
     ], realtime=False)
