@@ -9,7 +9,7 @@ class ConstructorAgent():
     
     def __init__(self, game_ref):
         self.game = game_ref
-        self.MAX_DISTANCE = 50
+        self.MAX_DISTANCE = 35
         self.MAX_GATEWAY = 12
         self.MAX_STARGATE = 8
 
@@ -24,7 +24,7 @@ class ConstructorAgent():
             if self.game.units(NEXUS).ready.exists:
                 nexus = self.game.units(NEXUS).ready.random
                 if self.game.can_afford(PYLON):
-                    await self.game.build(PYLON, near=nexus, max_distance=self.MAX_DISTANCE)
+                    await self.game.build(PYLON, near=nexus.position.towards(self.game.game_info.map_center, 5), max_distance=self.MAX_DISTANCE)
 
     async def build_assimilators(self):
         for nexus in self.game.units(NEXUS).ready:
