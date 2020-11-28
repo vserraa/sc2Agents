@@ -2,7 +2,7 @@ import sc2
 from sc2.constants import *
 from sc2.units import Unit, Units
 
-class WorkerAgent():
+class WorkerAgent2():
     
     def __init__(self, game_ref):
         self.game = game_ref

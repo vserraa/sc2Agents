@@ -17,7 +17,7 @@ class ConstructorAgent2():
         await self.offensive_force_buildings()
 
     async def build_pylons(self):
-        if (self.game.supply_left < 2 and not self.game.already_pending(PYLON)) or (self.supply_used > 10 and self.supply_left < 5 and self.already_pending(PYLON) < 2):
+        if (self.game.supply_left < 2 and not self.game.already_pending(PYLON)) or (self.game.supply_used > 10 and self.game.supply_left < 5 and self.game.already_pending(PYLON) < 2):
             if self.game.units(NEXUS).ready.exists:
                 nexus = self.game.units(NEXUS).ready.random
                 if self.game.can_afford(PYLON):
@@ -42,7 +42,7 @@ class ConstructorAgent2():
 
             if self.game.units(CYBERNETICSCORE).ready.exists:
                 if self.game.townhalls.ready.amount + self.game.already_pending(NEXUS) > 2 and self.game.units(STARGATE).ready.amount + self.game.already_pending(STARGATE) < 3:
-                    if self.can_afford(STARGATE):
+                    if self.game.can_afford(STARGATE):
                         await self.game.build(STARGATE, near=pylon, max_distance=self.MAX_DISTANCE)
             elif self.game.units(GATEWAY).ready.exists:
                 if self.game.can_afford(CYBERNETICSCORE) and not self.game.already_pending(CYBERNETICSCORE):
