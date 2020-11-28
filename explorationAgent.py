@@ -19,8 +19,7 @@ class ExplorationAgent():
             await self.game.expand_now()
 
     async def chronoboost(self):
-		for nexus in self.game.units(NEXUS).ready:
-			if not nexus.has_buff(BuffId.CHRONOBOOSTENERGYCOST):					
-				abilities = await self.game.get_available_abilities(nexus)	
-				if AbilityId.EFFECT_CHRONOBOOSTENERGYCOST in abilities:				
-					await self.game.do(nexus(AbilityId.EFFECT_CHRONOBOOSTENERGYCOST, nexus))	
+        for nexus in self.game.units(NEXUS).ready:
+            canCast = self.game.can_cast(nexus, AbilityId.EFFECT_CHRONOBOOSTENERGYCOST)
+            if canCast:
+                await self.game.do(nexus(AbilityId.EFFECT_CHRONOBOOSTENERGYCOST, nexus))
