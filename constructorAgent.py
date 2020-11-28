@@ -18,10 +18,10 @@ class ConstructorAgent():
 
     async def build_pylons(self):
         if self.game.supply_left < 5 and not self.game.already_pending(PYLON):
-            nexuses = self.game.units(NEXUS).ready
-            if nexuses.exists:
+            if self.game.units(NEXUS).ready.exists:
+                nexus = self.game.units(NEXUS).ready.random
                 if self.game.can_afford(PYLON):
-                    await self.game.build(PYLON, near=nexuses.first, max_distance=60)
+                    await self.game.build(PYLON, near=nexus, max_distance=1000)
 
     async def build_assimilators(self):
         for nexus in self.game.units(NEXUS).ready:
@@ -41,16 +41,16 @@ class ConstructorAgent():
 
             if self.game.units(GATEWAY).ready.exists and not self.game.units(CYBERNETICSCORE):
                 if self.game.can_afford(CYBERNETICSCORE) and not self.game.already_pending(CYBERNETICSCORE):
-                    await self.game.build(CYBERNETICSCORE, near=pylon)
+                    await self.game.build(CYBERNETICSCORE, near=pylon, max_distance=1000)
 
             elif len(self.game.units(GATEWAY)) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                 if self.game.can_afford(GATEWAY) and not self.game.already_pending(GATEWAY):
-                    await self.game.build(GATEWAY, near=pylon)
+                    await self.game.build(GATEWAY, near=pylon, max_distance=1000)
 
             if self.game.units(CYBERNETICSCORE).ready.exists:
                 if len(self.game.units(STARGATE)) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2):
                     if self.game.can_afford(STARGATE) and not self.game.already_pending(STARGATE):
-                        await self.game.build(STARGATE, near=pylon)
+                        await self.game.build(STARGATE, near=pylon, max_distance=1000)
             
             if not self.game.units(FORGE).ready.exists and not self.game.already_pending(FORGE) and len(self.game.units(GATEWAY)) > 2:
-                await self.game.build(FORGE, near=pylon)
+                await self.game.build(FORGE, near=pylon, max_distance=1000)
