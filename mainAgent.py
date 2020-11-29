@@ -8,6 +8,7 @@ from workerAgent import WorkerAgent
 from constructorAgent import ConstructorAgent
 from militarAgent import MilitarAgent
 from explorationAgent import ExplorationAgent
+from upgradeAgent import UpgradeAgent
 
 class MainAgent(sc2.BotAI):
     def __init__(self):
@@ -17,6 +18,7 @@ class MainAgent(sc2.BotAI):
         self.constructorAgent = ConstructorAgent(self)
         self.militarAgent = MilitarAgent(self)
         self.explorationAgent = ExplorationAgent(self)
+        self.upgradeAgent = UpgradeAgent(self)
         self.iteration = 0
 
     async def on_step(self, iteration):   
@@ -25,8 +27,9 @@ class MainAgent(sc2.BotAI):
         await self.constructorAgent.on_step(iteration)
         await self.explorationAgent.on_step(iteration)
         await self.militarAgent.on_step(iteration)
+        await self.upgradeAgent.on_step(iteration)
 
 run_game(maps.get("AcropolisLE"), [
     Bot(Race.Protoss, MainAgent()),
-    Computer(Race.Zerg, Difficulty.Hard)
+    Computer(Race.Terran, Difficulty.Hard)
     ], realtime=False)

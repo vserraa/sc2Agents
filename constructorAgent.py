@@ -1,15 +1,12 @@
 import sc2
-from sc2 import run_game, maps, Race, Difficulty
-from sc2.player import Bot, Computer
-from sc2.constants import NEXUS, PYLON, GATEWAY, ASSIMILATOR, \
- CYBERNETICSCORE, STALKER, STARGATE, VOIDRAY, FORGE
+from sc2.ids.unit_typeid import UnitTypeId
 import random
 
 class ConstructorAgent():
     
     def __init__(self, game_ref):
         self.game = game_ref
-        self.MAX_DISTANCE = 35
+        self.MAX_DISTANCE = 60
         self.MAX_GATEWAY = 12
         self.MAX_STARGATE = 8
 
@@ -20,40 +17,40 @@ class ConstructorAgent():
         await self.offensive_force_buildings()
 
     async def build_pylons(self):
-        if self.game.supply_left < 5 and not self.game.already_pending(PYLON):
-            if self.game.units(NEXUS).ready.exists:
-                nexus = self.game.units(NEXUS).ready.random
-                if self.game.can_afford(PYLON):
-                    await self.game.build(PYLON, near=nexus.position.towards(self.game.game_info.map_center, 5), max_distance=self.MAX_DISTANCE)
+        if self.game.supply_left < 5 and not self.game.already_pending(UnitTypeId.PYLON):
+            if self.game.townhalls.ready.exists:
+                nexus = self.game.townhalls.ready.random
+                if self.game.can_afford(UnitTypeId.PYLON):
+                    await self.game.build(UnitTypeId.PYLON, near=nexus.position.towards(self.game.game_info.map_center, 8), max_distance=self.MAX_DISTANCE)
 
     async def build_assimilators(self):
-        for nexus in self.game.units(NEXUS).ready:
-            vaspenes = self.game.state.vespene_geyser.closer_than(15.0, nexus)
+        for nexus in self.game.townhalls.ready:
+            vaspenes = self.game.vespene_geyser.closer_than(15.0, nexus)
             for vaspene in vaspenes:
-                if not self.game.can_afford(ASSIMILATOR):
+                if not self.game.can_afford(UnitTypeId.ASSIMILATOR):
                     break
                 worker = self.game.select_build_worker(vaspene.position)
                 if worker is None:
                     break
-                if not self.game.units(ASSIMILATOR).closer_than(1.0, vaspene).exists:
-                    await self.game.do(worker.build(ASSIMILATOR, vaspene))
+                if not self.game.structures(UnitTypeId.ASSIMILATOR).closer_than(1.0, vaspene).exists:
+                    worker.build(UnitTypeId.ASSIMILATOR, vaspene)
 
     async def offensive_force_buildings(self):
-        if self.game.units(PYLON).ready.exists:
-            pylon = self.game.units(PYLON).ready.random
+        if self.game.structures(UnitTypeId.PYLON).ready.exists:
+            pylon = self.game.structures(UnitTypeId.PYLON).ready.random
 
-            if self.game.units(GATEWAY).ready.exists and not self.game.units(CYBERNETICSCORE):
-                if self.game.can_afford(CYBERNETICSCORE) and not self.game.already_pending(CYBERNETICSCORE):
-                    await self.game.build(CYBERNETICSCORE, near=pylon, max_distance=self.MAX_DISTANCE)
+            if self.game.structures(UnitTypeId.GATEWAY).ready.exists and not self.game.structures(UnitTypeId.CYBERNETICSCORE):
+                if self.game.can_afford(UnitTypeId.CYBERNETICSCORE) and not self.game.already_pending(UnitTypeId.CYBERNETICSCORE):
+                    await self.game.build(UnitTypeId.CYBERNETICSCORE, near=pylon, max_distance=self.MAX_DISTANCE)
 
-            elif self.game.units(GATEWAY).amount + self.game.already_pending(GATEWAY) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2) and self.game.units(GATEWAY).amount + self.game.already_pending(GATEWAY) < self.MAX_GATEWAY:
-                if self.game.can_afford(GATEWAY) and not self.game.already_pending(GATEWAY):
-                    await self.game.build(GATEWAY, near=pylon, max_distance=self.MAX_DISTANCE)
+            elif self.game.structures(UnitTypeId.GATEWAY).amount + self.game.already_pending(UnitTypeId.GATEWAY) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2) and self.game.structures(UnitTypeId.GATEWAY).amount + self.game.already_pending(UnitTypeId.GATEWAY) < self.MAX_GATEWAY:
+                if self.game.can_afford(UnitTypeId.GATEWAY) and not self.game.already_pending(UnitTypeId.GATEWAY):
+                    await self.game.build(UnitTypeId.GATEWAY, near=pylon, max_distance=self.MAX_DISTANCE)
 
-            if self.game.units(CYBERNETICSCORE).ready.exists:
-                if self.game.units(STARGATE).amount + self.game.already_pending(STARGATE) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2) and self.game.units(STARGATE).amount + self.game.already_pending(STARGATE) < self.MAX_STARGATE:
-                    if self.game.can_afford(STARGATE) and not self.game.already_pending(STARGATE):
-                        await self.game.build(STARGATE, near=pylon, max_distance=self.MAX_DISTANCE)
+            if self.game.structures(UnitTypeId.CYBERNETICSCORE).ready.exists:
+                if self.game.structures(UnitTypeId.STARGATE).amount + self.game.already_pending(UnitTypeId.STARGATE) < ((self.game.iteration / self.game.ITERATIONS_PER_MINUTE)/2) and self.game.structures(UnitTypeId.STARGATE).amount + self.game.already_pending(UnitTypeId.STARGATE) < self.MAX_STARGATE:
+                    if self.game.can_afford(UnitTypeId.STARGATE) and not self.game.already_pending(UnitTypeId.STARGATE):
+                        await self.game.build(UnitTypeId.STARGATE, near=pylon, max_distance=self.MAX_DISTANCE)
             
-            if not self.game.units(FORGE).ready.exists and not self.game.already_pending(FORGE) and self.game.units(GATEWAY).amount > 2:
-                await self.game.build(FORGE, near=pylon, max_distance=self.MAX_DISTANCE)
+            if not self.game.structures(UnitTypeId.FORGE).ready.exists and not self.game.already_pending(UnitTypeId.FORGE) and self.game.structures(UnitTypeId.GATEWAY).amount > 2:
+                await self.game.build(UnitTypeId.FORGE, near=pylon, max_distance=self.MAX_DISTANCE)
